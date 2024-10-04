@@ -171,7 +171,7 @@ class Wnacg_Spider:
 
         
         
-        print("下载完成")
+        
 
 
                       
@@ -239,7 +239,7 @@ class Wnacg_Spider:
         all_page=self.get_all_pages(self.first_url)
 
         
-
+    
 
 
 
@@ -269,5 +269,5 @@ if __name__ == '__main__':
 
         pool.submit(spider.Download,queue.get())
         
-
+    print("总耗时：",time.time()-stime)
     
