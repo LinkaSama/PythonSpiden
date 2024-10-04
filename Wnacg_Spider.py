@@ -58,9 +58,9 @@ class Wnacg_Spider:
 
             pages = res.xpath('//div[@class="pic_box tb"]/a/@href')[1]  # https://www.wnacg.com/photos-view-id-21379066.html
 
-            name=res.xpath('//h2/text()')[0]
+            self.name=res.xpath('//h2/text()')[0]
 
-            print(name)
+            # print(self.name)
 
             B_page="https://www.wnacg.com"+pages
 
@@ -81,11 +81,116 @@ class Wnacg_Spider:
 
             for i in range(1,int(all_pages)+1):
 
-                page_url="https:" + F_page_url+"/"+str(i)+".png"
 
-                print(page_url)
+                if i < 10:
 
-    
+
+
+                    page_url="https:" + F_page_url+"/"+"00"+str(i)+".png"
+
+                    queue.put(page_url)
+
+                elif i >= 10 and i < 100:
+
+
+                    page_url="https:" + F_page_url+"/"+"0"+str(i)+".png"
+
+                    # print(page_url)
+
+                    queue.put(page_url)
+
+                else:
+
+
+                    page_url="https:" + F_page_url+"/"+""+str(i)+".png"
+
+                    # print(page_url)
+
+                    queue.put(page_url)
+
+
+
+
+                    
+
+
+
+                
+
+                    
+
+                # page_url="https:" + F_page_url+"/"+str(i)+".png"
+
+                # print(page_url)
+                # queue.put(page_url)
+
+
+    def Download(self,url):
+
+        
+        
+
+
+        res = self.resp(url)
+
+        file_path="wnacg"+'/'+self.name+"/"
+
+                                        
+        if not os.path.exists(file_path):# 检查文件路径是否存在
+                                                    
+            os.makedirs(file_path)  # 如果文件路径不存在，则创建该路径
+
+
+        if res is None:
+
+           jpg_url=url.replace('png','jpg')
+
+           
+
+           res=requests.get(url=jpg_url,headers=self.headers)
+
+           with open(file_path+jpg_url.split('/')[-1],'wb') as f:
+
+               f.write(res.content)
+
+               print(jpg_url,"Download successfully~~~")
+
+
+
+        else:
+           
+           
+
+           res=requests.get(url=url,headers=self.headers)
+
+           with open(file_path+url.split('/')[-1],'wb') as f:
+
+               f.write(res.content)
+
+               print(url,"Download successfully~~~")
+
+
+
+
+                      
+        
+
+               
+
+
+
+
+           
+
+
+
+
+
+
+
+
+
+        
 
 
 
@@ -131,7 +236,7 @@ class Wnacg_Spider:
 
         all_page=self.get_all_pages(self.first_url)
 
-
+        
 
 
 
@@ -148,6 +253,16 @@ class Wnacg_Spider:
 
 
 if __name__ == '__main__':
+    stime = time.time()
     queue = Queue()
     spider = Wnacg_Spider()
     spider.run()
+
+    # spider.Download(queue.get())
+
+
+    pool=ThreadPoolExecutor(max_workers=8)
+
+    while not queue.empty():
+
+        pool.submit(spider.Download,queue.get())

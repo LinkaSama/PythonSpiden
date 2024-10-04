@@ -110,7 +110,7 @@ class Mzitu:
         picture_info['src']=ulrs
 
 
-
+        self.download(picture_info)
 
 
 
@@ -134,7 +134,7 @@ class Mzitu:
     #     # print(src_list)
     #     #
         # print(picture_info)
-        self.download(picture_info)
+       
 
     def download(self,picture_info):
 
@@ -210,3 +210,5 @@ if __name__ == '__main__':
 
     while queue.qsize() > 0:
         pool.submit(spider.get_picture_info, queue.get())
+
+    print("succ",'总耗时:', time.time() - stime)
