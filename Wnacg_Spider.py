@@ -169,7 +169,9 @@ class Wnacg_Spider:
 
                print(url,"Download successfully~~~")
 
-
+        
+        
+        print("下载完成")
 
 
                       
@@ -232,7 +234,7 @@ class Wnacg_Spider:
     def run(self):
         
         
-        self.first_url ='https://www.wnacg.com/photos-index-page-2-aid-217780.html'                       #"https://www.wnacg.com/photos-index-page-2-aid-258940.html" # 起始页 ,输入第二页的url
+        self.first_url =input("起始页 ,输入第二页的url >>: ")                     #"https://www.wnacg.com/photos-index-page-2-aid-258940.html" # 起始页 ,输入第二页的url
 
         all_page=self.get_all_pages(self.first_url)
 
@@ -266,6 +268,6 @@ if __name__ == '__main__':
     while not queue.empty():
 
         pool.submit(spider.Download,queue.get())
-        print("下载完成")
+        
 
     
